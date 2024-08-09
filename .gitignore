@@ -1,4 +1,4 @@
-parameters.env
+
 .DS_Store
 vendor
 .phpdoc
@@ -6,5 +6,4 @@ data
 .vscode
 .htaccess
 docs/manual_tecnico
-composer.lock
 phpdoc.dist.xml
