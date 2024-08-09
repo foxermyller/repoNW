@@ -1,5 +1,5 @@
 <h1>Lista de Transportistas</h1>
-<a href="path_to_create_function">Crear Nuevo Transportista</a>
+<a href="index.php?page=ShipperController&action=create">Crear Nuevo Transportista</a>
 <table>
     <thead>
         <tr>
@@ -14,14 +14,14 @@
     <tbody>
         <?php foreach ($shippers as $shipper): ?>
             <tr>
-                <td><?php echo $shipper['ShipperID']; ?></td>
-                <td><?php echo $shipper['ShipperName']; ?></td>
-                <td><?php echo $shipper['ContactName']; ?></td>
-                <td><?php echo $shipper['Phone']; ?></td>
-                <td><?php echo $shipper['Email']; ?></td>
+                <td><?php echo htmlspecialchars($shipper['ShipperID']); ?></td>
+                <td><?php echo htmlspecialchars($shipper['ShipperName']); ?></td>
+                <td><?php echo htmlspecialchars($shipper['ContactName']); ?></td>
+                <td><?php echo htmlspecialchars($shipper['Phone']); ?></td>
+                <td><?php echo htmlspecialchars($shipper['Email']); ?></td>
                 <td>
-                    <a href="index.php?page=ShipperController&action=update&id=<?php echo $shipper['ShipperID']; ?>">Actualizar</a>
-                    <a href="index.php?page=ShipperController&action=delete&id=<?php echo $shipper['ShipperID']; ?>">Eliminar</a>
+                    <a href="index.php?page=ShipperController&action=update&id=<?php echo urlencode($shipper['ShipperID']); ?>">Actualizar</a>
+                    <a href="index.php?page=ShipperController&action=delete&id=<?php echo urlencode($shipper['ShipperID']); ?>">Eliminar</a>
                 </td>
             </tr>
         <?php endforeach; ?>
