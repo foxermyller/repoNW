@@ -1,54 +1,24 @@
 <?php
+
 namespace Dao;
 
 class Dao {
-    private static $_conn = null;
+    private static $conn;
 
-    private function __construct()
-    {
-      
-    }
+    public static function getConn() {
+        if (self::$conn === null) {
+            $host = '127.0.0.1'; // O 'localhost'
+            $dbname = 'nombre_base_datos'; // Reemplaza con el nombre de tu base de datos
+            $user = 'root'; // Reemplaza con el nombre de usuario correcto
+            $password = ''; // Reemplaza con la contraseña del usuario, si hay
 
-    private function __clone()
-    {
-
-    }
-
-    public static function getConn($dds = null, $user = null, $pswd = null)
-    {
-        if (self::$_conn == null) {
-            $_dds = sprintf(
-                "%s:host=%s;dbname=%s;port=%s;charset=utf8",
-                \Utilities\Context::getContextByKey("DB_PROVIDER"),
-                \Utilities\Context::getContextByKey("DB_SERVER"),
-                \Utilities\Context::getContextByKey("DB_DATABASE"),
-                \Utilities\Context::getContextByKey("DB_PORT")
-            );
-            $_user = \Utilities\Context::getContextByKey("DB_USER");
-            $_pswd = \Utilities\Context::getContextByKey("DB_PSWD");
-            $_timezone = \Utilities\Context::getContextByKey("TIMEZONE");
-            if ($dds !== null) {
-                $_dds = $dds;
+            try {
+                self::$conn = new \PDO("mysql:host=$host;dbname=$dbname", $user, $password);
+                self::$conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+            } catch (\PDOException $e) {
+                echo 'Connection failed: ' . $e->getMessage();
             }
-            if ($user !== null) {
-                $_user = $user;
-            }
-            if ($pswd !== null) {
-                $_pswd = $pswd;
-            }
-            self::$_conn = new \PDO(
-                $_dds,
-                $_user,
-                $_pswd,
-                array(
-                  \PDO::ATTR_EMULATE_PREPARES => true,
-                  \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
-                  \PDO::ATTR_PERSISTENT => false //,
-                  // \PDO::MYSQL_ATTR_INIT_COMMAND => "SET time_zone = '". $_timezone ."'"
-                )
-            );
         }
-        return self::$_conn;
+        return self::$conn;
     }
 }
-?>
