@@ -55,21 +55,15 @@ abstract class Table
 
     }
 
-    protected static function obtenerRegistros($sqlstr, $params, &$conn = null)
-    {
-        $pConn = null;
-        if ($conn != null) {
-            $pConn = $conn;
+    protected static function obtenerRegistros($sql, $params = []) {
+        $conn = Dao::getConn();
+        if ($conn) {
+            $stmt = $conn->prepare($sql);
+            $stmt->execute($params);
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
         } else {
-            $pConn = self::getConn();
+            throw new \Exception("Database connection not established.");
         }
-        $query = $pConn->prepare($sqlstr);
-        foreach ($params as $key=>&$value) {
-            $query->bindParam(":".$key, $value, self::getBindType($value));
-        }
-        $query->execute();
-        $query->setFetchMode(\PDO::FETCH_ASSOC);
-        return $query->fetchAll();
     }
 
     protected static function obtenerUnRegistro($sqlstr, $params, &$conn = null)

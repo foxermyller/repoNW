@@ -65,4 +65,16 @@ class ShipperController extends PublicController implements IController
             exit;
         }
     }
+
+
+    private function render($view, $data = []): void
+{
+    extract($data); 
+    $viewPath = __DIR__ . '/../views/shippers/' . $view; 
+    if (file_exists($viewPath)) {
+        include $viewPath; 
+    } else {
+        echo "Vista no encontrada: $viewPath";
+    }
+}
 }
